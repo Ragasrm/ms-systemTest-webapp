@@ -9,6 +9,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Hidden } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -32,9 +33,14 @@ const NavBar = (props) => {
     const handleMenu = (event) => {
       setAnchorEl(event.currentTarget);
     };
+    const history = useHistory();
   
     const handleClose = () => {
       setAnchorEl(null);
+
+      localStorage.clear()
+      history.push("/");
+     
     };
 
     return (
@@ -46,11 +52,9 @@ const NavBar = (props) => {
             </IconButton>
           </Hidden>
           <Typography variant="h6" noWrap>
-            Hospital Name
+            Intellectyx
           </Typography>
-          <Typography variant="h6" noWrap>
-            Logo
-          </Typography>
+         
           <div>
               <IconButton
                 aria-label="account of current user"

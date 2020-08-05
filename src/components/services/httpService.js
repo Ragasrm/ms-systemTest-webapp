@@ -22,4 +22,20 @@ export const saveProduct = async (data) => {
     );
   };
 
+  /*********************************customer****************************************************************/
+export const singUpFunction = async (data) => {   
+  return await axios.post("http://localhost:5000/api/v1/customer", data);
+};
+
+export const authenticateLogin = async (credentials) => {
+  return await axios.post(
+    "http://localhost:5000/api/v1/customer/authenticate",
+    credentials
+  );
+};
+
+
+  
+
+
   

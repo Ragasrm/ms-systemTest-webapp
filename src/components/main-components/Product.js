@@ -168,6 +168,10 @@ let id = rowData._id
 
         this.setState({
             data:result.data,
+            name:'',
+            shopName:'',
+            status:'',
+            showProductForm:false
           
         })
        
@@ -253,19 +257,24 @@ handleView =  (e,rowData) =>{
 
 {/* /**************************************Table Builder*********************************************************************************************/}
         
+        {
+            this.state.data.length > 0 &&
             <div style={{ paddingTop: 10 }}>    
             <TableBuilder
-             title="Product Details"
-             columns={this.tableColumns}
-             data={this.state.data}
-             handleEdit={this.handleEdit} 
-             handleDelete={this.handleDelete}
-             handleView={this.handleView}
-             actions={['Edit','View','Delete']}
-            
+            title="Product Details"
+            columns={this.tableColumns}
+            data={this.state.data}
+            handleEdit={this.handleEdit} 
+            handleDelete={this.handleDelete}
+            handleView={this.handleView}
+            actions={['Edit','View','Delete']}
+
             />
             </div>
 
+
+        }
+           
 
 
 
