@@ -8,7 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Hidden } from '@material-ui/core';
+import { Button, Hidden } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -37,10 +37,12 @@ const NavBar = (props) => {
   
     const handleClose = () => {
       setAnchorEl(null);
+    
+    };
 
+    const logout = () => {
       localStorage.clear()
-      history.push("/");
-     
+      history.push("/");     
     };
 
     return (
@@ -52,7 +54,7 @@ const NavBar = (props) => {
             </IconButton>
           </Hidden>
           <Typography variant="h6" noWrap>
-            Intellectyx
+            {/* Altimetrik */} ABC
           </Typography>
          
           <div>
@@ -80,8 +82,9 @@ const NavBar = (props) => {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={logout}>Logout</MenuItem>
               </Menu>
+              <span color="inherit">{localStorage.getItem('username')}</span>
             </div>
         </Toolbar>
       </AppBar>

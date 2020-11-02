@@ -2,9 +2,8 @@ import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import Product from './main-components/Product';
-import SingUp from './main-components/SingUp';
-import Login from './main-components/Login';
+import Dashboard from './main-components/Dashboard';
+
 
 const Main = () => {
     const useStyles = makeStyles(theme => ({
@@ -19,10 +18,8 @@ const Main = () => {
             <Toolbar />
             <main>
                 <Switch>
-                    <Route exact  path="/main"  render={() => <Redirect to="/main/product" />}/>
-                    {/* <Route path="/Login" component={Login}/>
-                    <Route path="/SignUp" component={SingUp}/> */}
-                    <Route path="/main/product" component={Product}/>                   
+                    <Route exact  path="/main"  render={() => <Redirect to="/main/dashboard" />}/>                  
+                    <Route path="/main/dashboard" component={Dashboard}/>                   
                 </Switch>
             </main>
         </div>

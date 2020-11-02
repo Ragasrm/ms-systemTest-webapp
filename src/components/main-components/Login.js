@@ -13,6 +13,7 @@ import {
 import { Link } from "react-router-dom";
 import { authenticateLogin } from "../services/httpService";
 import Alert from "@material-ui/lab/Alert";
+import LoaderModal from "../shared/LoaderModal";
 
 export default class Login extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ export default class Login extends Component {
       email: "",
       password: "",
       message: "",
+      loader:false,
     };
   }
 
@@ -35,17 +37,23 @@ export default class Login extends Component {
   };
 
   handleSubmit = () => {
+    this.setState({
+      loader:true
+    })
     authenticateLogin({
       username: this.state.email,
       password: this.state.password,
     })
       .then((res) => {
+       
         if (res.data.success) {
           this.setState({
             email: "",
             password: "",
+            loader:false
           });
           localStorage.setItem("isAuthenticated", res.data.success);
+          localStorage.setItem("username", res.data.username)
           this.props.history.push("/main");
         }
       })
@@ -55,6 +63,7 @@ export default class Login extends Component {
           message: "No user Found",
           email: "",
           password: "",
+          loader:false
         });
       });
   };
@@ -62,6 +71,7 @@ export default class Login extends Component {
   render() {
     return (
       <div>
+        <div>
         <Container component="main" maxWidth="xs">
           {this.state.message && (
             <Alert severity="error"> {this.state.message}</Alert>
@@ -120,6 +130,10 @@ export default class Login extends Component {
             </form>
           </div>
         </Container>
+        </div>
+        <div>
+         <LoaderModal open={this.state.loader}/>
+        </div>
       </div>
     );
   }

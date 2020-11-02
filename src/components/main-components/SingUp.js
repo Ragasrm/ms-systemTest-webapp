@@ -9,47 +9,118 @@ import {
   Button,
   Box,
   Checkbox,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  Radio,
+  Select,
+  MenuItem,
+  InputLabel,
+  CircularProgress,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { singUpFunction } from "../services/httpService";
+import DialogBox from "../shared/DialogBox";
+import LoaderModal from "../shared/LoaderModal";
+import Alert from "@material-ui/lab/Alert";
 
 export default class SingUp extends Component {
+  country=[];
   constructor(props) {
     super(props);
     this.state = {
+
+      // form state
       firstName: "",
       lastName: "",
       email: "",
       password: "",
+      gender:"",
+      country:"",
+
+      // modal state
+      open: false,
+      message:'',
+      errmessage:'',
+
+      // loader state
+      loader:false
     };
+
+
+    this.country = [
+      "India","USA", "Chinna"
+    ]
   }
 
   /******************************************* handle change methods*********************************************************************************/
 
-  handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
+  handleChange = (e) => {       
+      this.setState({
+        [e.target.name]: e.target.value,
+      });  
+   
   };
+
+  formReset = () =>{
+    this.setState({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      gender:"",
+      country:"",
+    });
+
+  }
+
+  handleModalClose = () =>{
+    this.setState({
+      open:false,
+      message:'',      
+    })              
+    this.props.history.push("/login");
+  }
   /******************************************* submit methods**************************************************************************************/
   handleSubmit = () => {
-    let data = this.state;
+    this.setState({
+      loader:true
+    })
+    // preparing data
+    let data = {
+      firstName:this.state.firstName,
+      lastName: this.state.lastName,
+      email: this.state.email,
+      password: this.state.password,
+      gender:this.state.gender,
+      country:this.state.country,
+
+    }
+    // signup api call
     singUpFunction(data)
-      .then((res) => {
-        if (res) {
-          alert(
-            "User was registered successfully..! you can login with Registered Credentials"
-          );
+      .then((res) => {        
+        if (res.data.success) { 
           this.setState({
-            firstName: "",
-            lastName: "",
-            email: "",
-            password: "",
-          });
-          this.props.history.push("/login");
+            loader:false,
+            open:true,
+            message: `User was registered successfully..! you can login with Registered Credentials`
+          })        
+        } else {
+          this.formReset() // to reset form
+          this.setState({
+            errmessage:'User already exist..!',
+            loader:false,
+          })
         }
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => {
+        console.log(err.message)
+        this.formReset() // to reset form
+        this.setState({
+          errmessage:'User already exist..!',
+          loader:false,
+        })
+      });
   };
 
   /**********************************************************************************************************************
@@ -64,6 +135,10 @@ export default class SingUp extends Component {
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
+            {this.state.errmessage && (
+            <Alert severity="error">{this.state.errmessage}</Alert>
+          )}
+           
             <form noValidate>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
@@ -117,7 +192,45 @@ export default class SingUp extends Component {
                     onChange={this.handleChange}
                   />
                 </Grid>
+
+                <Grid item xs={12}>
+                <FormControl component="fieldset">
+                <FormLabel component="legend">Gender</FormLabel>
+                <RadioGroup
+                  aria-label="gender"
+                  name="gender"
+                  value={this.state.gender}
+                  onChange={this.handleChange}
+                  style={{ display: "flex", flexDirection: "row" }}
+                >
+                  <FormControlLabel value="female" control={<Radio />} label="Female" />
+                  <FormControlLabel value="male" control={<Radio />} label="Male" />
+                  <FormControlLabel value="other" control={<Radio />} label="Other" />
+                 
+                </RadioGroup>
+              </FormControl>
               </Grid>
+
+              <Grid item xs={12}>
+              <FormControl variant="outlined" style={{width:'400px'}}>
+              <InputLabel id="demo-simple-select-outlined-label">Country</InputLabel>
+              <Select
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                value={this.state.country}
+                onChange={this.handleChange}
+                label="Country"
+                name="country"
+              >
+              {this.country.map((item, index) => (
+                            <MenuItem key={index} value={item}>
+                            {item}
+                            </MenuItem>
+              ))}
+        </Select>
+      </FormControl>
+      </Grid>
+               </Grid>
               <div style={{ marginTop: 10 }}>
                 <Button
                   type="button"
@@ -130,15 +243,26 @@ export default class SingUp extends Component {
                 </Button>
               </div>
               <Grid container justify="flex-end">
-                <Grid item>
-                  <Link to="/Login" variant="body2">
+                <Grid item style={{display:'flex', flexDirection:"row", justifyContent:"space-around"}}>
+                <Link to="/Login" variant="body2">
                     Sign in
+                  </Link>
+                  <Link to="#" onClick={this.formReset} variant="body2">
+                    Reset
                   </Link>
                 </Grid>
               </Grid>
             </form>
           </div>
         </Container>
+
+        <div>
+        <DialogBox open={this.state.open} message={this.state.message} handleClose={this.handleModalClose}/>
+        </div>
+
+        <div>
+         <LoaderModal open={this.state.loader}/>
+        </div>
       </div>
     );
   }
