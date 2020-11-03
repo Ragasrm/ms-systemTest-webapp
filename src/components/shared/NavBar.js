@@ -54,7 +54,7 @@ const NavBar = (props) => {
             </IconButton>
           </Hidden>
           <Typography variant="h6" noWrap>
-            {/* Altimetrik */} ABC
+            Altimetrik - Dashboard
           </Typography>
          
           <div>
