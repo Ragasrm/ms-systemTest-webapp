@@ -23,6 +23,7 @@ import { singUpFunction } from "../services/httpService";
 import DialogBox from "../shared/DialogBox";
 import LoaderModal from "../shared/LoaderModal";
 import Alert from "@material-ui/lab/Alert";
+import "../css/login.css"
 
 export default class SingUp extends Component {
   country=[];
@@ -129,7 +130,7 @@ export default class SingUp extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container-wrapper">
         <Container component="main" maxWidth="xs">
           <div>
             <Typography component="h1" variant="h5">
@@ -242,8 +243,8 @@ export default class SingUp extends Component {
                   Sign Up
                 </Button>
               </div>
-              <Grid container justify="flex-end">
-                <Grid item style={{display:'flex', flexDirection:"row", justifyContent:"space-around"}}>
+              <Grid container>
+                <Grid item className="bottom-link">
                 <Link to="/Login" variant="body2">
                     Sign in
                   </Link>
@@ -254,15 +255,11 @@ export default class SingUp extends Component {
               </Grid>
             </form>
           </div>
-        </Container>
-
-        <div>
+        </Container>      
         <DialogBox open={this.state.open} message={this.state.message} handleClose={this.handleModalClose}/>
-        </div>
-
-        <div>
-         <LoaderModal open={this.state.loader}/>
-        </div>
+          
+        <LoaderModal open={this.state.loader}/>
+      
       </div>
     );
   }

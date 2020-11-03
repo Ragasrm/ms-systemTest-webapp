@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { authenticateLogin } from "../services/httpService";
 import Alert from "@material-ui/lab/Alert";
 import LoaderModal from "../shared/LoaderModal";
+import "../css/login.css"
 
 export default class Login extends Component {
   constructor(props) {
@@ -36,7 +37,9 @@ export default class Login extends Component {
     return !(this.state.email.length === 0 || this.state.password.length === 0);
   };
 
-  handleSubmit = () => {
+  handleSubmit = (e) => {
+
+    e.preventDefault()
     this.setState({
       loader:true
     })
@@ -70,8 +73,8 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div>
-        <div>
+
+        <div className="container-wrapper">
         <Container component="main" maxWidth="xs">
           {this.state.message && (
             <Alert severity="error"> {this.state.message}</Alert>
@@ -80,7 +83,7 @@ export default class Login extends Component {
             <Typography component="h1" variant="h5">
               Login
             </Typography>
-            <form noValidate>
+            <form noValidate onSubmit={this.handleSubmit}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
@@ -110,11 +113,11 @@ export default class Login extends Component {
               </Grid>
               <div style={{ marginTop: 10 }}>
                 <Button
-                  type="button"
+                  type="submit"
                   fullWidth
                   variant="contained"
                   color="primary"
-                  onClick={this.handleSubmit}
+                  //onClick={}
                   disabled={!this.isFormValid()}
                 >
                   do Login
@@ -130,11 +133,10 @@ export default class Login extends Component {
             </form>
           </div>
         </Container>
+        <LoaderModal open={this.state.loader}/>
         </div>
-        <div>
-         <LoaderModal open={this.state.loader}/>
-        </div>
-      </div>
+      
+     
     );
   }
 }

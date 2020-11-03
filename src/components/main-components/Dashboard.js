@@ -30,7 +30,7 @@ export default class Dashboard extends Component {
       .then((res) => {
        console.log('res', res.data)
        this.setState({
-      //  data: res.data,
+        data: res.data.data,
       });
       })
       .catch((err) => err.mess);
