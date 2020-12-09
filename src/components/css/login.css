@@ -1,0 +1,8 @@
+.container-wrapper{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    background-image: url(https://wallpapers.net/web/wallpapers/spot-light-background-hd-wallpaper/thumbnail/lg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}

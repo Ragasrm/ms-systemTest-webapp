@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { singUpFunction } from "../services/httpService";
+import '../css/login.css'
 
 export default class SingUp extends Component {
   constructor(props) {
@@ -58,7 +59,7 @@ export default class SingUp extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container-wrapper">
         <Container component="main" maxWidth="xs">
           <div>
             <Typography component="h1" variant="h5">

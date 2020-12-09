@@ -13,6 +13,7 @@ import {
 import { Link } from "react-router-dom";
 import { authenticateLogin } from "../services/httpService";
 import Alert from "@material-ui/lab/Alert";
+import '../css/login.css'
 
 export default class Login extends Component {
   constructor(props) {
@@ -61,7 +62,7 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container-wrapper">
         <Container component="main" maxWidth="xs">
           {this.state.message && (
             <Alert severity="error"> {this.state.message}</Alert>
