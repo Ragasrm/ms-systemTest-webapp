@@ -14,8 +14,10 @@ import { Link } from "react-router-dom";
 import { authenticateLogin } from "../services/httpService";
 import Alert from "@material-ui/lab/Alert";
 import '../css/login.css'
+import { connect } from "react-redux";
+import { login } from '../../redux/actions/auth.actions'
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,30 +37,25 @@ export default class Login extends Component {
     return !(this.state.email.length === 0 || this.state.password.length === 0);
   };
 
-  handleSubmit = () => {
-    authenticateLogin({
-      username: this.state.email,
-      password: this.state.password,
-    })
-      .then((res) => {
-        if (res.data.success) {
-          this.setState({
-            email: "",
-            password: "",
-          });
-          localStorage.setItem("isAuthenticated", res.data.success);
-          this.props.history.push("/main");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        this.setState({
-          message: "No user Found",
-          email: "",
-          password: "",
+  handleSubmit = async () => {
+    try {
+      const res =  await authenticateLogin({
+          username: this.state.email,
+          password: this.state.password,
         });
-      });
+      localStorage.setItem("isAuthenticated", res.data.success);
+  } catch(err) {
+      console.log(err);
+  }
+    this.props.dispatch(login(this.state.email, this.state.password))
   };
+
+  componentDidUpdate() {
+    console.log('componentDidUpdate', this.props)
+    if(this.props.auth.loggedIn) {
+      this.props.history.push("/main");
+    }
+  }
 
   render() {
     return (
@@ -125,3 +122,11 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapStateToProps = (store) => {
+  return {
+    auth: store.auth
+  }
+}
+
+export default connect(mapStateToProps)(Login)
